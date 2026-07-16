@@ -9,7 +9,8 @@
 			"Type": "Runtime",
 			"LoadingPhase": "Default",
 			"AdditionalDependencies": [
-				"Engine"
+				"Engine",
+				"GameplayAbilities"
 			]
 		}
 	],
@@ -134,11 +135,7 @@
 		},
 		{
 			"Name": "NiagaraUIRenderer",
-			"Enabled": true,
-			"SupportedTargetPlatforms": [
-				"Win64",
-				"Android"
-			]
+			"Enabled": true
 		},
 		{
 			"Name": "QOO_RootBoneAdder",
