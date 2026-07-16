@@ -2,6 +2,10 @@ Binaries
 DerivedDataCache
 Intermediate
 Saved
+
+# Stock Epic sample content, re-addable from the engine at any time.
+# Not worth ~636 MB of LFS storage.
+Content/StarterContent/
 .vscode
 .vs
 *.VC.db
