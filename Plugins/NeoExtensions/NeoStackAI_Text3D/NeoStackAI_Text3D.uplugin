@@ -1,0 +1,60 @@
+{
+  "FileVersion": 3,
+  "Version": 45,
+  "VersionName": "2.0.45",
+  "FriendlyName": "NeoStack AI Text 3D",
+  "Description": "Author Text 3D actors, component state, layout effects, and project settings.",
+  "Category": "NeoExtensions",
+  "CreatedBy": "Betide Studio",
+  "CreatedByURL": "https://betide.studio",
+  "DocsURL": "https://neostack.dev/docs",
+  "MarketplaceURL": "",
+  "SupportURL": "https://neostack.dev/support",
+  "EngineVersion": "5.8.0",
+  "CanContainContent": false,
+  "Installed": true,
+  "HasExplicitPlatforms": true,
+  "SupportedTargetPlatforms": [
+    "Win64",
+    "Mac",
+    "Linux"
+  ],
+  "Modules": [
+    {
+      "Name": "NSAI_Text3D",
+      "Type": "EditorNoCommandlet",
+      "LoadingPhase": "PostEngineInit",
+      "PlatformAllowList": [
+        "Win64",
+        "Mac",
+        "Linux"
+      ]
+    }
+  ],
+  "Plugins": [
+    {
+      "Name": "NeoStackAI",
+      "Enabled": true
+    },
+    {
+      "Name": "NeoStackAI_Avalanche",
+      "Enabled": true
+    },
+    {
+      "Name": "Text3D",
+      "Enabled": true
+    },
+    {
+      "Name": "GeometryProcessing",
+      "Enabled": true
+    },
+    {
+      "Name": "GeometryScripting",
+      "Enabled": true
+    },
+    {
+      "Name": "GeometryMask",
+      "Enabled": true
+    }
+  ]
+}

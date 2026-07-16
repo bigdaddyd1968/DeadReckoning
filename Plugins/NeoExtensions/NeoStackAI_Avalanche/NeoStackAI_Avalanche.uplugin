@@ -1,0 +1,52 @@
+{
+  "FileVersion": 3,
+  "Version": 45,
+  "VersionName": "2.0.45",
+  "FriendlyName": "NeoStack AI Avalanche",
+  "Description": "Author core Motion Design Avalanche actors and shapes from Lua.",
+  "Category": "NeoExtensions",
+  "CreatedBy": "Betide Studio",
+  "CreatedByURL": "https://betide.studio",
+  "DocsURL": "https://neostack.dev/docs",
+  "MarketplaceURL": "",
+  "SupportURL": "https://neostack.dev/support",
+  "EngineVersion": "5.8.0",
+  "CanContainContent": false,
+  "Installed": true,
+  "HasExplicitPlatforms": true,
+  "SupportedTargetPlatforms": [
+    "Win64",
+    "Mac",
+    "Linux"
+  ],
+  "Modules": [
+    {
+      "Name": "NSAI_Avalanche",
+      "Type": "EditorNoCommandlet",
+      "LoadingPhase": "PostEngineInit",
+      "PlatformAllowList": [
+        "Win64",
+        "Mac",
+        "Linux"
+      ]
+    }
+  ],
+  "Plugins": [
+    {
+      "Name": "NeoStackAI",
+      "Enabled": true
+    },
+    {
+      "Name": "Avalanche",
+      "Enabled": true
+    },
+    {
+      "Name": "RemoteControl",
+      "Enabled": true
+    },
+    {
+      "Name": "StructUtils",
+      "Enabled": true
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "FileVersion": 3,
+  "Version": 45,
+  "VersionName": "2.0.45",
+  "FriendlyName": "NeoStack AI MetaHuman",
+  "Description": "Edit MetaHuman characters \u2014 face and body customization, animation, and MetaHuman SDK asset workflows.",
+  "Category": "NeoExtensions",
+  "CreatedBy": "Betide Studio",
+  "CreatedByURL": "https://betide.studio",
+  "DocsURL": "https://neostack.dev/docs",
+  "MarketplaceURL": "",
+  "SupportURL": "https://neostack.dev/support",
+  "EngineVersion": "5.8.0",
+  "CanContainContent": false,
+  "IsBetaVersion": true,
+  "Installed": true,
+  "HasExplicitPlatforms": true,
+  "SupportedTargetPlatforms": [
+    "Win64",
+    "Mac"
+  ],
+  "Modules": [
+    {
+      "Name": "NSAI_MetaHuman",
+      "Type": "EditorNoCommandlet",
+      "LoadingPhase": "PostEngineInit",
+      "PlatformAllowList": [
+        "Win64",
+        "Mac"
+      ]
+    }
+  ],
+  "Plugins": [
+    {
+      "Name": "NeoStackAI",
+      "Enabled": true
+    },
+    {
+      "Name": "MetaHumanCharacter",
+      "Enabled": true
+    },
+    {
+      "Name": "MetaHumanSDK",
+      "Enabled": true
+    },
+    {
+      "Name": "MetaHuman",
+      "Enabled": true
+    },
+    {
+      "Name": "MetaHumanCoreTech",
+      "Enabled": true
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "FileVersion": 3,
+  "Version": 45,
+  "VersionName": "2.0.45",
+  "FriendlyName": "NeoStack AI Chaos Fracture",
+  "Description": "Fracture meshes, author geometry collections, and set up destruction simulations.",
+  "Category": "NeoExtensions",
+  "CreatedBy": "Betide Studio",
+  "CreatedByURL": "https://betide.studio",
+  "DocsURL": "https://neostack.dev/docs",
+  "MarketplaceURL": "",
+  "SupportURL": "https://neostack.dev/support",
+  "EngineVersion": "5.8.0",
+  "CanContainContent": false,
+  "Installed": true,
+  "HasExplicitPlatforms": true,
+  "SupportedTargetPlatforms": [
+    "Win64",
+    "Mac",
+    "Linux"
+  ],
+  "Modules": [
+    {
+      "Name": "NSAI_ChaosFracture",
+      "Type": "EditorNoCommandlet",
+      "LoadingPhase": "PostEngineInit",
+      "PlatformAllowList": [
+        "Win64",
+        "Mac",
+        "Linux"
+      ]
+    }
+  ],
+  "Plugins": [
+    {
+      "Name": "NeoStackAI",
+      "Enabled": true
+    },
+    {
+      "Name": "Fracture",
+      "Enabled": true
+    },
+    {
+      "Name": "Dataflow",
+      "Enabled": true
+    }
+  ]
+}
