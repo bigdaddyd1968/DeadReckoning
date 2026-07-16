@@ -47,10 +47,29 @@ Log category `LogDeadReckoning` is declared in `Source/DeadReckoning/DeadReckoni
 
 ### Content layout
 
-- **`Content/_DeadReckoning/`** is the project's own content root — the underscore sorts it to the top. It holds the Blueprint counterparts to the C++ spine (`BPC_DeadReckoningCharacter_Base`, `GM_DeadReckoningGameMode`, `PC_DeadReckoningPlayerController`) and `GameplayAbilitySystem/` split into `Abilities/` (`GA_*`), `Effects/` (`GE_*`), and `Cues/` (`GC_*`) — GhostDash is the reference vertical slice across all three. **New project content goes here**, not in the stock folders.
-- Everything else is stock Epic template content (`FirstPerson/`, `ThirdPerson/`, `Variant_*`, `StarterContent/`, `LevelPrototyping/`) or third-party/Fab marketplace packs (`Fab/`, `Western_Pack/`, `Gothic_Environment/`, `ModularGothicFantasyEnvironment/`, `Grz_Archer_Pack/`, `HS_WeaponPack_03/`, the various AnimSets). Treat these as vendored assets — they're source material for the gothic-western art direction, not code to maintain.
-- Startup and default map is `/Game/ThirdPerson/Lvl_ThirdPerson` (`Config/DefaultEngine.ini`).
-- World Partition external actors/objects live under `Content/__ExternalActors__` and `__ExternalObjects__` per level — don't hand-edit these.
+- **`Content/_DeadReckoning/`** is the project's own content root — the underscore sorts it to the top. It holds the Blueprint counterparts to the C++ spine (`BPC_DeadReckoningCharacter_Base`, `GM_DeadReckoningGameMode`, `PC_DeadReckoningPlayerController`), `Maps/` (`DefaultTestLevel` — the entry point), and `GameplayAbilitySystem/` split into `Abilities/` (`GA_*`), `Effects/` (`GE_*`), and `Cues/` (`GC_*`) — GhostDash is the reference vertical slice across all three. **New project content goes here**, not in the stock folders.
+- Everything else is third-party/Fab marketplace art (`Fab/`, `Western_Pack/`, `Gothic_Environment/`, `ModularGothicFantasyEnvironment/`, `Grz_Archer_Pack/`, `HS_WeaponPack_03/`, `BlinkAndDashVFX/`, the various AnimSets) plus `Input/`, `Characters/`, and `LevelPrototyping/`. Treat the packs as vendored assets — source material for the gothic-western art direction, not code to maintain. `Content/StarterContent/` is gitignored: stock Epic sample content, re-addable from the engine, not worth ~636 MB of LFS storage.
+- **The stock Epic template content is gone** — FirstPerson, ThirdPerson, the `Variant_*` slices, and `Weapons/` were all removed once the project had its own entry point, along with their external actors. Don't reintroduce them. Several vendored packs ship their own `ThirdPerson_AnimBP`-style assets; those are self-contained pack content and unrelated to the deleted `/Game/ThirdPerson/`.
+- Startup map, editor startup map, and `GlobalDefaultGameMode` all point at project-owned content (`Config/DefaultEngine.ini`): `/Game/_DeadReckoning/Maps/DefaultTestLevel` and `GM_DeadReckoningGameMode_C`. This has changed more than once — **read `DefaultEngine.ini` rather than trusting any map path quoted here**.
+- World Partition external actors/objects live under `Content/__ExternalActors__/<MapFolder>/` and `__ExternalObjects__/`, **not** beside the `.umap`. Don't hand-edit them — and note that deleting a map's folder strands its external actors, which then linger as orphans. When removing a map, remove its `__ExternalActors__`/`__ExternalObjects__` folder too.
+
+### Git LFS
+
+All Unreal assets are stored in **Git LFS** (~4500 files). `.gitattributes` routes `*.uasset`, `*.umap`, `*.ubulk`, `*.uexp`, and common media (`*.png`, `*.tga`, `*.fbx`, `*.wav`, …) through the LFS filter, so new assets are converted automatically on `git add` — no per-file setup. It also pins the repo's line-ending policy (`* text=auto`) so behavior doesn't depend on each machine's `core.autocrlf`.
+
+Consequences worth knowing:
+- `git show HEAD:<asset>` yields a **pointer file**, not asset bytes. To compare real content, use the working tree or `git lfs` tooling.
+- If assets ever appear as ~130-byte text files starting with `version https://git-lfs.github.com/spec/v1`, the smudge filter didn't run — `git lfs checkout` restores them from the local object store.
+- Binary `.uasset` merge conflicts can't be resolved by merging; pick a side, then re-`git add` so the clean filter regenerates the pointer.
+- There is no remote. The art is ~10 GB, far past GitHub's free 1 GB LFS tier, and one texture exceeds GitHub's hard 100 MB per-file limit — any future host needs paid LFS capacity or self-hosting.
+
+### Working with a running editor
+
+The Unreal Editor holds OS locks on `.uasset`/`.umap` files it has loaded. **Git operations that write to the working tree (`git rm`, `git stash`, `git checkout`) fail with "Invalid argument" / "Permission denied" while the editor is open**, sometimes after partially applying — leaving files deleted from disk mid-operation. Close the editor before history rewrites or bulk file operations; commits are fine, since they only read.
+
+The editor also writes config while running (`Config/DefaultEditor.ini` accumulates `AdvancedPreviewScene.SharedProfiles`), so working-tree churn there is usually incidental editor state, not authored change.
+
+Prefer deleting or renaming assets **through the editor** rather than `git rm`: it runs reference fixup. `EditorAssetLibrary.find_package_referencers_for_asset` is a good pre-flight check.
 
 `DeadReckoning.uproject` enables ~95 plugins, far beyond the default template — notably GAS (`GameplayAbilities`, `AbilitySystemGameFeatureActions`, `TargetingSystem`), movement (`Mover`, `MoverIntegrations`, `ChaosMover`), characters/clothing (`MetaHuman`, `ChaosClothAsset`, `ChaosOutfitAsset`), animation (`PoseSearch`, `MotionTrajectory`, `MotionWarping`, `BlendStack`, `AnimationWarping`), and `CommonUI`. Check that list before assuming a subsystem isn't available.
 
@@ -67,3 +86,7 @@ This is applied consistently: every gameplay class under `Public/` and `Private/
 The `NeoStackAI` plugin exposes a live Unreal Editor to Claude Code through Lua (`execute_script`) and drives the skills under `.claude/skills/` and `.agents/skills/` (identical content, kept in sync by the plugin — treat `.claude/skills/` as canonical when editing; `.neostack/skills-manifest.json` tracks digests). Skills: `neostack-blueprint` (Blueprint variables/components/graph nodes), `neostack-widget` / `neostack-umg-design` (UMG), `neostack-niagara` / `neostack-niagara-design` (VFX), `neostack-game-testing` (autonomous PIE playtests).
 
 These skills require a running editor with the plugin loaded, and operate on `.uasset`/Blueprint content, not the C++ source tree. `Plugins/NeoExtensions/` holds ~20 `NeoStackAI_*` subsystem bridges (GameplayAbilities, Niagara, ControlRig, MetaHuman, EnhancedInput, …) that back them; `Plugins/Developer/RiderLink` is Rider's IDE integration. Both are tooling — not game code.
+
+The `neostack-connect` Claude Desktop extension bridges to the editor. It is **pinned to one project** via `project_dir` in `%APPDATA%\Claude\Claude Extensions Settings\local.dxt.neostack.neostack-connect.json`, which the extension maps to `NEOSTACK_PROJECT_DIR` **when the proxy process launches** — editing it requires restarting Claude Desktop to take effect. If it points at another project (this user works across several), the connector exposes only `unreal_status`/`list_unreal_projects` instead of `execute_script`. Leaving `project_dir` unset auto-connects when exactly one NeoStackAI editor is running.
+
+The editor publishes `Saved/NeoStackAI/runtime.json` (project path, editor PID, heartbeat) and hosts its own HTTP MCP server — `execute_script` can be driven directly at that URL with JSON-RPC if the extension is misconfigured. Lua `execute_script` exposes `execute_python(code)`, which unlocks Unreal's full Python API (`import unreal`) for anything the Lua surface lacks — asset deletion, reference queries, world settings. Note `print()` is required for output; a bare `return` yields nothing.
