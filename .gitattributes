@@ -1,3 +1,57 @@
+# Line-ending policy for the repo. Committed here so it applies to every
+# clone regardless of each machine's core.autocrlf setting.
+
+# Normalize anything Git detects as text to LF in the repository, and check
+# it out with the platform-native ending.
+* text=auto
+# Unreal binary assets. Git's heuristic already detects these as binary, but
+# state it explicitly — a stray text classification would apply EOL
+# conversion and silently corrupt them.
+*.uasset  binary
+*.umap    binary
+*.ubulk   binary
+*.uexp    binary
+*.upk     binary
+*.udk     binary
+# Other binaries.
+*.png     binary
+*.jpg     binary
+*.jpeg    binary
+*.gif     binary
+*.tga     binary
+*.bmp     binary
+*.psd     binary
+*.ico     binary
+*.svg     text
+*.fbx     binary
+*.wav     binary
+*.mp3     binary
+*.ogg     binary
+*.ttf     binary
+*.otf     binary
+*.dll     binary
+*.lib     binary
+*.pdb     binary
+*.exe     binary
+*.so      binary
+*.dylib   binary
+*.zip     binary
+*.7z      binary
+# Scripts whose endings matter to their interpreter.
+*.sh       text eol=lf
+*.command  text eol=lf
+*.bat      text eol=crlf
+*.cmd      text eol=crlf
+*.ps1      text eol=crlf
+# Unreal / project text files.
+*.uproject   text
+*.uplugin    text
+*.ini        text
+*.cs         text
+*.h          text
+*.hpp        text
+*.cpp        text
+*.inl        text
 *.uasset filter=lfs diff=lfs merge=lfs -text
 *.umap filter=lfs diff=lfs merge=lfs -text
 *.ubulk filter=lfs diff=lfs merge=lfs -text
