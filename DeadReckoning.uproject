@@ -115,7 +115,7 @@
 		},
 		{
 			"Name": "GASCompanion",
-			"Enabled": true,
+			"Enabled": false,
 			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/d83c6f34c3fb4b7092dde195c37c7413"
 		},
 		{
@@ -135,7 +135,11 @@
 		},
 		{
 			"Name": "NiagaraUIRenderer",
-			"Enabled": true
+			"Enabled": true,
+			"SupportedTargetPlatforms": [
+				"Win64",
+				"Android"
+			]
 		},
 		{
 			"Name": "QOO_RootBoneAdder",
