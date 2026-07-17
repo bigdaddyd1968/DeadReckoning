@@ -49,7 +49,7 @@ Log category `LogDeadReckoning` is declared in `Source/DeadReckoning/DeadReckoni
 
 Two GAS settings are config-driven, and both bite silently if missed:
 
-- **Gameplay tags** are declared in `Config/DefaultGameplayTags.ini` (`ImportTagsFromConfig=True`) as `+GameplayTagList` entries — there are no native C++ tag declarations. GhostDash's are `GameplayAbility.Movement.Dash` and `GameplayCue.Dash.Active`. New tags go here; `WarnOnInvalidTags=True`, so typos surface as warnings rather than errors.
+- **Gameplay tags** are declared in `Config/DefaultGameplayTags.ini` (`ImportTagsFromConfig=True`) as `+GameplayTagList` entries — there are no native C++ tag declarations. GhostDash's are `GameplayAbility.Movement.Dash` and `GameplayCue.Dash.Active`; its supporting effects use `Cooldown.Dash` and `Status.Stamina.Regen`. New tags go here; `WarnOnInvalidTags=True`, so typos surface as warnings rather than errors.
 - **GameplayCue discovery is scoped** by `+GameplayCueNotifyPaths` in `Config/DefaultGame.ini` to `/Game/_DeadReckoning/GameplayAbilitySystem/Cues`. A `GC_*` asset outside that path **is not registered and will not fire**, with no error. The scope exists because the unset default scans all of `/Game/` — ~10 GB of vendored art. Add a path there rather than dropping cues elsewhere.
 
 ### Content layout
@@ -58,7 +58,7 @@ Two GAS settings are config-driven, and both bite silently if missed:
 - Everything else is third-party/Fab marketplace art (`Fab/`, `Western_Pack/`, `Gothic_Environment/`, `ModularGothicFantasyEnvironment/`, `Grz_Archer_Pack/`, `HS_WeaponPack_03/`, `BlinkAndDashVFX/`, `WhooshSFXPackLite/`, the various AnimSets) plus `Input/`, `Characters/`, and `LevelPrototyping/`. Treat the packs as vendored assets — source material for the gothic-western art direction, not code to maintain. `Content/StarterContent/` is gitignored: stock Epic sample content, re-addable from the engine, not worth ~636 MB of LFS storage.
 - **The stock Epic template content is gone** — FirstPerson, ThirdPerson, the `Variant_*` slices, and `Weapons/` were all removed once the project had its own entry point, along with their external actors. Don't reintroduce them. Several vendored packs ship their own `ThirdPerson_AnimBP`-style assets; those are self-contained pack content and unrelated to the deleted `/Game/ThirdPerson/`.
 - Startup map, editor startup map, and `GlobalDefaultGameMode` all point at project-owned content (`Config/DefaultEngine.ini`): `/Game/_DeadReckoning/Maps/DefaultTestLevel` and `GM_DeadReckoningGameMode_C`. This has changed more than once — **read `DefaultEngine.ini` rather than trusting any map path quoted here**.
-- World Partition external actors/objects live under `Content/__ExternalActors__/<MapFolder>/` and `__ExternalObjects__/`, **not** beside the `.umap`. Don't hand-edit them — and note that deleting a map's folder strands its external actors, which then linger as orphans. When removing a map, remove its `__ExternalActors__`/`__ExternalObjects__` folder too.
+- `DefaultTestLevel` is a regular (non-World Partition) level, so there's currently no `Content/__ExternalActors__/__ExternalObjects__` tree — those folders existed for the deleted stock template maps. If a future level enables World Partition, its external actors/objects will live under `Content/__ExternalActors__/<MapFolder>/` and `__ExternalObjects__/`, not beside the `.umap`; don't hand-edit them, and remove that folder alongside the map if it's ever deleted.
 
 ### Git LFS
 
