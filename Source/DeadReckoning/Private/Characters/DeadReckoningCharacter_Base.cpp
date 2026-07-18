@@ -12,6 +12,7 @@
 #include "InputActionValue.h"
 #include "DeadReckoning/DeadReckoning.h"
 #include "GameplayAbilitySystem/AttributeSets/DeadReckoningAttributeSet.h"
+#include "GameplayAbilitySystem/AttributeSets/DR_CoreAbilitiesAttributeSet.h"
 
 // Sets default values
 ADeadReckoningCharacter_Base::ADeadReckoningCharacter_Base()
@@ -46,6 +47,9 @@ ADeadReckoningCharacter_Base::ADeadReckoningCharacter_Base()
 	
 	// Add the basic attribute set
 	DeadReckoningAttributeSet = CreateDefaultSubobject<UDeadReckoningAttributeSet>(TEXT("DeadReckoningAttributeSet"));
+	
+	// Add the core abilities attribute set
+	CoreAbilitiesAttributeSet = CreateDefaultSubobject<UDR_CoreAbilitiesAttributeSet>(TEXT("CoreAbilitiesAttributeSet"));
 
 	// Create a camera boom (pulls in towards the player if there is a collision)
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));

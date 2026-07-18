@@ -17,7 +17,7 @@ class DEADRECKONING_API UDeadReckoningAttributeSet : public UAttributeSet
 	GENERATED_BODY()
 
 public:
-
+	// Constructor
 	UDeadReckoningAttributeSet();
 	
 	// Health Attributes
