@@ -64,4 +64,8 @@ public:
 	}
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
+	// Clamp Health to [0, MaxHealth] after an instant effect (heal/damage) changes it,
+	// so healing can't push Health above MaxHealth.
+	virtual void PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data) override;
 };

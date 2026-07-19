@@ -2,6 +2,7 @@
 
 
 #include "GameplayAbilitySystem/AttributeSets/DeadReckoningAttributeSet.h"
+#include "GameplayEffectExtension.h"
 #include "Net/UnrealNetwork.h"
 
 UDeadReckoningAttributeSet::UDeadReckoningAttributeSet()
@@ -19,6 +20,17 @@ void UDeadReckoningAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProp
 	DOREPLIFETIME_CONDITION_NOTIFY(UDeadReckoningAttributeSet, MaxHealth, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UDeadReckoningAttributeSet, Stamina, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UDeadReckoningAttributeSet, MaxStamina, COND_None, REPNOTIFY_Always);
+}
+
+void UDeadReckoningAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
+{
+	Super::PostGameplayEffectExecute(Data);
+
+	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
+	{
+		// Keep Health within [0, MaxHealth] so healing can't overshoot the cap.
+		SetHealth(FMath::Clamp(GetHealth(), 0.0f, GetMaxHealth()));
+	}
 }
 
 
